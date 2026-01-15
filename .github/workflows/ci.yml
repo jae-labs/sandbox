@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  secret-detection:
+    name: Secret Detection
+    if: github.event_name == 'pull_request'
+    uses: jae-labs/.github/.github/workflows/secret_detection.yml@main
+    secrets: inherit
+  code-scanning:
+    name: Code Scanning
+    if: github.event_name == 'pull_request'
+    uses: jae-labs/.github/.github/workflows/code_scanning.yml@main
+    permissions:
+      pull-requests: write # Required for reviewdog to post comments
+      contents: read
