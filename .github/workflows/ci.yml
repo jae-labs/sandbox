@@ -11,11 +11,14 @@ jobs:
     name: Secret Detection
     if: github.event_name == 'pull_request'
     uses: jae-labs/.github/.github/workflows/secret_detection.yml@main
-    secrets: inherit
+    secrets: inherit # Required by Gitleaks Action license
+    permissions:
+      pull-requests: write # Required for post comments
+      contents: read
   code-scanning:
     name: Code Scanning
     if: github.event_name == 'pull_request'
     uses: jae-labs/.github/.github/workflows/code_scanning.yml@main
     permissions:
-      pull-requests: write # Required for reviewdog to post comments
+      pull-requests: write # Required for posting comments
       contents: read
