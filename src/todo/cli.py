@@ -73,20 +73,19 @@ def main():
                 print("No tasks found.")
                 return
             
-            completion_rate = sum(1 for t in tasks if t.completed == 1) / len(tasks)
             print(f"{'ID':<4} | {'Title':<20} | {'Priority':<8} | {'Due Date':<10} | {'Completed':<9}")
             print("-" * 60)
             for t in tasks:
-                status_str = "Yes" if t.completed == 1 else "No"
+                status_str = "Yes" if t.completed else "No"
                 due_str = t.due_date if t.due_date else "None"
                 print(f"{t.id:<4} | {t.title:<20} | {t.priority:<8} | {due_str:<10} | {status_str:<9}")
 
         elif args.command == "complete":
-            db.complete_task(args.id, completed=1)
+            db.complete_task(args.id, completed=True)
             print(f"Task {args.id} marked completed successfully.")
 
         elif args.command == "uncomplete":
-            db.complete_task(args.id, completed=0)
+            db.complete_task(args.id, completed=False)
             print(f"Task {args.id} marked pending successfully.")
 
         elif args.command == "delete":

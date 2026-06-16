@@ -8,7 +8,7 @@ class TodoItem:
     description: Optional[str] = None
     priority: str = "medium"
     due_date: Optional[str] = None
-    completed: int = 0
+    completed: bool = False
     id: Optional[int] = None
     created_at: Optional[str] = None
 

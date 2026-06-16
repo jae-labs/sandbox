@@ -16,7 +16,7 @@ def test_db_operations(db):
     item = TodoItem(title="Test task", description="Test desc", priority="high", due_date="2026-06-20")
     inserted = db.add_task(item)
     assert inserted.id is not None
-    assert inserted.completed == 0
+    assert inserted.completed is False
 
     # Retrieve tasks
     tasks = db.list_tasks()
@@ -27,7 +27,7 @@ def test_db_operations(db):
     db.complete_task(inserted.id)
     tasks = db.list_tasks(status="completed")
     assert len(tasks) == 1
-    assert tasks[0].completed == 1
+    assert tasks[0].completed is True
 
     # Edit task
     db.edit_task(inserted.id, title="Updated task", priority="low")
@@ -38,3 +38,11 @@ def test_db_operations(db):
     # Delete task
     db.delete_task(inserted.id)
     assert len(db.list_tasks()) == 0
+
+    # Test error cases for invalid task IDs
+    with pytest.raises(ValueError, match="Task with ID 999 not found"):
+        db.complete_task(999)
+    with pytest.raises(ValueError, match="Task with ID 999 not found"):
+        db.delete_task(999)
+    with pytest.raises(ValueError, match="Task with ID 999 not found"):
+        db.edit_task(999, title="New Title")
