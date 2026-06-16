@@ -101,19 +101,18 @@ class DatabaseManager:
         params = []
         
         if title is not None:
-            if not title.strip():
-                raise ValueError("Title cannot be empty")
+            TodoItem.validate_title(title)
             updates.append("title = ?")
             params.append(title)
         if description is not None:
             updates.append("description = ?")
             params.append(description)
         if priority is not None:
-            if priority not in ("low", "medium", "high"):
-                raise ValueError("Invalid priority")
+            TodoItem.validate_priority(priority)
             updates.append("priority = ?")
             params.append(priority)
         if due_date is not None:
+            TodoItem.validate_due_date(due_date)
             updates.append("due_date = ?")
             params.append(due_date)
             

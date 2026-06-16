@@ -12,15 +12,25 @@ class TodoItem:
     id: Optional[int] = None
     created_at: Optional[str] = None
 
-    def __post_init__(self):
-        if not self.title or not self.title.strip():
+    @staticmethod
+    def validate_title(title: str):
+        if not title or not title.strip():
             raise ValueError("Title cannot be empty")
-        
-        if self.priority not in ("low", "medium", "high"):
+
+    @staticmethod
+    def validate_priority(priority: str):
+        if priority not in ("low", "medium", "high"):
             raise ValueError("Invalid priority: must be low, medium, or high")
-        
-        if self.due_date:
+
+    @staticmethod
+    def validate_due_date(due_date: Optional[str]):
+        if due_date:
             try:
-                datetime.strptime(self.due_date, "%Y-%m-%d")
+                datetime.strptime(due_date, "%Y-%m-%d")
             except ValueError:
                 raise ValueError("Due date must be in YYYY-MM-DD format")
+
+    def __post_init__(self):
+        self.validate_title(self.title)
+        self.validate_priority(self.priority)
+        self.validate_due_date(self.due_date)
