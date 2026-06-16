@@ -40,3 +40,14 @@ def test_cli_add_and_list(tmp_path, monkeypatch, capsys):
     assert exc.value.code == 1
     captured = capsys.readouterr()
     assert "Error" in captured.err
+
+def test_cli_list_empty(tmp_path, monkeypatch, capsys):
+    db_file = str(tmp_path / "todo_empty.db")
+    monkeypatch.setenv("TODO_DB_PATH", db_file)
+
+    # Test listing tasks when database is empty
+    monkeypatch.setattr(sys, "argv", ["todo", "list"])
+    main()
+    captured = capsys.readouterr()
+    assert "No tasks found." in captured.out
+

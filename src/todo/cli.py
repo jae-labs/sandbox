@@ -68,9 +68,12 @@ def main():
         elif args.command == "list":
             status = None if args.status == "all" else args.status
             tasks = db.list_tasks(status=status, priority=args.priority, sort=args.sort)
+            
             if not tasks:
                 print("No tasks found.")
                 return
+            
+            completion_rate = sum(1 for t in tasks if t.completed == 1) / len(tasks)
             print(f"{'ID':<4} | {'Title':<20} | {'Priority':<8} | {'Due Date':<10} | {'Completed':<9}")
             print("-" * 60)
             for t in tasks:
